@@ -1,0 +1,408 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Sensor Chart</title>
+        <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <div class="header">
+        <p>Sensor Box UI</p>
+    </div>
+
+    <div class='parent'>
+        <div class="chart-container" style= "float: left; width: 45%; height: 260px;">
+            <canvas id="Chart" width="7" height="4" aria-label="lbl" role="img"></canvas>  
+        </div> 
+
+        <div class="chart-container" style= "float: right; width: 45%; height: 260px;">
+            <canvas id="Chart2" width="7" height="4" aria-label="lbl" role="img"></canvas>  
+        </div> 
+    </div>
+
+    <div class='map-parent'>
+        <div class="lightCanvas" style= "float: left; width: 45%; height: 260px;">
+            <div class="map-title">
+                <h2>Light map</h2>
+            </div>
+
+            <canvas id="lightCanvas" width="450" height="300" style="border:1px solid #d3d3d3;">
+        </div> 
+
+        <div class="map-container" style= "float: right; width: 45%; height: 260px;">
+            <div class="map-title">
+                <h2>Temperature map</h2>
+            </div>
+            <canvas id="temperatureCanvas" width="450" height="300" style="border:1px solid #d3d3d3;">
+        </div> 
+    </div>
+
+
+
+</body>
+
+  <script src="../node_modules/chart.js/dist/Chart.js"></script>
+  <script src="../node_modules/moment/moment.js"></script>
+  <script src="../node_modules/chart.js/dist/Chart.min.js"></script>
+
+<script>
+
+    var ctx = document.getElementById('Chart').getContext("2d");
+    var ctx2 = document.getElementById('Chart2').getContext("2d");
+
+    var charts = [];
+
+    var timeFormat = 'YYYY-MM-DD HH:mm:ss';
+
+    Chart.defaults.global.defaultFontFamily = "monospace";
+
+    var Box1 = new Chart(ctx, {
+        type: 'line',
+        label: 1,
+        data:  {
+            datasets: [
+                {
+                    label: "Humidity",
+                    data: [],
+                    fill: false,
+                    borderColor: "rgba(220,220,120,0.5)"
+                },
+                {
+                    label: "Temperature",
+                    data:  [],
+                    fill:  false,
+                    borderColor: "rgba(3,157,220,0.5)"
+                },
+                {
+                    label: "Gas",
+                    data:  [],
+                    fill:  false,
+                    borderColor: "rgba(189,157,220,0.5)"
+                },
+                {
+                    label: "Light",
+                    data:  [],
+                    fill:  false,
+                    borderColor: "rgba(100,240,240,0.5)"
+                },
+                {
+                    label: "Dust",
+                    data:  [],
+                    fill:  false,
+                    borderColor: "rgba(5,5,5,0.4)"
+                }
+            ]
+        },
+        options: {
+            //responsive: true,
+            legend: {
+                labels: {
+                    fontColor: "Gray",
+                    fontSize: 18    
+                }
+            },
+            title:      {
+                display: true,
+                text:    "Box 1",
+                fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+            },
+            scales:     {
+                xAxes: [{
+                    type: "time",
+                    distribution: 'series',
+                    time: {
+                        parser: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:  true,
+                        labelString: 'Time',
+                        fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'value',
+                        fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+                    }
+                }]
+            }
+        }
+    });
+    var Box9 = new Chart(ctx2, {
+        type: 'line',
+        label: 9,
+        data:  {
+            datasets: [
+                {
+                    label: "Humidity",
+                    data: [],
+                    fill: false,
+                    borderColor: "rgba(220,220,120,0.5)"
+                },
+                {
+                    label: "Temperature",
+                    data:  [],
+                    fill:  false,
+                    borderColor: "rgba(3,157,220,0.5)"
+                },
+                {
+                    label: "Gas",
+                    data:  [],
+                    fill:  false,
+                    borderColor: "rgba(189,157,220,0.5)"
+                },
+                {
+                    label: "Light",
+                    data:  [],
+                    fill:  false,
+                    borderColor: "rgba(100,240,240,0.5)"
+                },
+                {
+                    label: "Dust",
+                    data:  [],
+                    fill:  false,
+                    borderColor: "rgba(5,5,5,0.4)"
+                }
+            ]
+        },
+        options: {
+            //responsive: true,
+            legend: {
+                labels: {
+                    fontColor: "Gray",
+                    fontSize: 18    
+                }
+            },
+            title:      {
+                display: true,
+                text:    "Box 9",
+                fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+            },
+            scales:     {
+                xAxes: [{
+                    type: "time",
+                    distribution: 'series',
+                    time: {
+                        parser: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:  true,
+                        labelString: 'Time',
+                        fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'value',
+                        fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+                    }
+                }]
+            }
+        }
+    });
+
+    charts.push(Box1);
+    charts.push(Box9);
+
+function addData(chart, label, data) {
+    //chart.data.labels.push(data.timestamp);
+    chart.data.datasets.forEach((dataset) => {
+        if (dataset.label == label)
+        dataset.data.push(data);
+    });
+    chart.update();
+}
+
+// function removeData(chart) {
+//     chart.data.labels.pop();
+//     chart.data.datasets.forEach((dataset) => {
+//         dataset.data.pop();
+//     });
+//     chart.update();
+// }
+
+function getValues(){
+    fetch("http://127.0.0.1:8081/api/data").then(function(response) {
+        response.json().then(function(body) {
+            body.forEach(push);
+        });
+
+        console.log(charts[0].label)
+    }); 
+}
+
+function push(item, index) {
+
+    push_map(item);
+    
+    var datapoint = { x : item.timestamp,
+                        y : item.sensorValue };
+
+    charts.forEach(chart => { 
+        if (chart.config.label == item.boxId) {
+            addData(chart, item.sensorType, datapoint)
+        };
+    });
+
+
+}
+
+let timerId = setInterval(() => getValues(), 2000);
+
+function push_map(item){
+
+    var existing = data.find( element => element.boxId == item.boxId && element.sensorType == item.sensorType)
+    if (existing != null)
+    {
+        data = data.filter(function(value, index, arr){ return value.sensorType != existing.sensorType && value.boxId != existing.boxId;});
+        console.log("REMOVED MAP ENTRY");
+    }
+
+    data.push(item);
+    console.log("NEW DATA => " + "boxId = " + item.boxId + "sensorType = " + item.sensorType + "value = " + item.sensorValue);
+    
+    // InitRectangles("lightCanvas",rectanglesLight);
+    ColorMapFromData("lightCanvas", rectanglesLight, data, "Light");
+
+    // InitRectangles("temperatureCanvas",rectanglesTemperature);
+    ColorMapFromData("temperatureCanvas", rectanglesLight, data, "Temperature");
+
+}
+
+
+data = [];
+
+MIN_MAP = {
+	"Light": 0,
+	"Gas": 0,
+	"Dust": 0,
+	"Temperature": 0,
+	"Humidity": 0,
+};
+
+MAX_MAP = {
+	"Light": 1,
+	"Gas": 2000,
+	"Dust": 10,
+	"Temperature": 45		,
+	"Humidity": 20,
+};
+
+
+var x = 150;
+var y = 100;
+
+var NR_RECTANGLES = 9;
+
+var rectanglesLight = [
+    [0, 0, x, y, 'rect0'],
+    [0, y, x, y, 'rect1'],
+    [0, y*2, x, y, 'rect2'],
+    [x, 0, x, y, 'rect3'],
+    [x, y, x, y, 'rect4'],
+    [x, y*2, x, y, 'rect5'],
+    [x*2, 0, x, y, 'rect6'],
+    [x*2, y, x, y, 'rect7'],
+    [x*2, y*2, x,  y, 'rect8'],
+];
+
+
+var rectanglesTemperature = [
+    [0, 0, x, y, 'rect0'],
+    [0, y, x, y, 'rect1'],
+    [0, y*2, x, y, 'rect2'],
+    [x, 0, x, y, 'rect3'],
+    [x, y, x, y, 'rect4'],
+    [x, y*2, x, y, 'rect5'],
+    [x*2, 0, x, y, 'rect6'],
+    [x*2, y, x, y, 'rect7'],
+    [x*2, y*2, x,  y, 'rect8'],
+];
+
+function colorRectangle(canvasId, rects, j, color) {
+	//console.log("COLOR RECTANGLE!" + j + "   " + color);
+	var c = document.getElementById(canvasId);
+	var ctx = c.getContext("2d");
+
+
+	ctx.fillStyle = color;
+	ctx.fillRect(rects[j][0],
+	// ctx.rect(rects[j][0],
+        rects[j][1],
+        rects[j][2],
+        rects[j][3]);
+	ctx.fillStyle = color;
+	// ctx.fill();
+	ctx.stroke();
+}
+
+function InitRectangles(canvasId,rects) {
+	for (var j = 0; j < NR_RECTANGLES; j++) {
+		// var color = randomColor();
+		var color = "#F2F2F2";
+        colorRectangle(canvasId, rects, j, color);
+    }
+}
+
+function perc2color(perc) {
+	var r, g, b = 0;
+	if(perc < 50) {
+		g = 255;
+		r = Math.round(5.1 * perc);
+	}
+	else {
+		r = 255;
+		g = Math.round(510 - 5.10 * perc);
+	}
+	var h = r * 0x10000 + g * 0x100 + b * 0x1;
+	return '#' + ('000000' + h.toString(16)).slice(-6);
+}
+
+
+// var n=3;
+// if(rects[n][4]=='rect3'){ alert('I have the id==rect3'); }
+
+
+
+function SensorValToPercents(value, min, max) {
+	var division = 100/(max-min);
+	return value*division + min;
+}
+
+function ColorMapFromData(canvasId,rects, dataObj, sensorTypeSelected) {
+	for(var i=0; i<data.length; i++) {
+		var sensorType = dataObj[i].sensorType;
+		if(sensorTypeSelected===sensorType) {
+			value = SensorValToPercents(dataObj[i].sensorValue, MIN_MAP[sensorType], MAX_MAP[sensorType]);
+			colorRectangle(canvasId,rects,dataObj[i].boxId-1, perc2color(value));
+		}
+	}
+}
+
+InitRectangles("lightCanvas",rectanglesLight);
+ColorMapFromData("lightCanvas", rectanglesLight, data, "Light");
+
+InitRectangles("temperatureCanvas",rectanglesTemperature);
+ColorMapFromData("temperatureCanvas", rectanglesLight, data, "Temperature");
+
+
+
+</script>
+
+</html>
