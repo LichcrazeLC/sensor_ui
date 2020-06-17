@@ -25,3 +25,22 @@
     font-size: 15px;
     font-family: monospace;
   }
+
+  .canvas-div-container {
+    background-image: url("images/map.jpg");
+    background-repeat: no-repeat !important; 
+    /* background-size: auto; */
+    /* height: 100%; 
+    width:470px; */
+    padding-left: 3px;
+    padding-top: 30px;
+    background-position: bottom;
+    background-position-y: 250px;
+    background-size: 100%;
+    /* display: inline-block; */
+  }
+
+.canvas-class {
+  border:1px solid #d3d3d3; 
+  opacity: 0.6;
+}
