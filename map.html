@@ -2,20 +2,48 @@
 <html>
 <head>
 	<title></title>
+	<style type="text/css">
+		
+  
+  	/*Am adaugat */
+
+	.canvas-div-container {
+	    background-image: url("images/map.jpg");
+		background-repeat: no-repeat !important:  
+		background-size: auto;
+		height: 100%; 
+		width:470px;
+		padding-left: 3px;
+		padding-top: 5px;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		display: inline-block;
+	}
+
+	.canvas-class {
+		border:1px solid #d3d3d3; opacity: 0.6;
+	}
+	</style>
 </head>
 <body>
 
 
 <h2>Light map:</h2>
-<canvas id="lightCanvas" width="450" height="300" style="border:1px solid #d3d3d3;">
+
+<div class="canvas-div-container">
+<canvas id="lightCanvas" width="450" height="300" class="canvas-class">
 Your browser does not support the HTML5 canvas tag.</canvas>
+</div>
 
 <span style="width:100px; display: inline-block;">	</span>
 
 <h2>Temperature map:</h2>
-<canvas id="temperatureCanvas" width="450" height="300" style="border:1px solid #d3d3d3;">
-Your browser does not support the HTML5 canvas tag.</canvas>
 
+<div class="canvas-div-container">
+<canvas id="temperatureCanvas" width="450" height="300" class="canvas-class">
+Your browser does not support the HTML5 canvas tag.</canvas>
+</div>
 </body>
 <script type="text/javascript">
 
