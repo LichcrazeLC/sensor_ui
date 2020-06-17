@@ -18,10 +18,27 @@
         <div class="chart-container" style= "float: right; width: 45%; height: 260px;">
             <canvas id="Chart2" width="7" height="4" aria-label="lbl" role="img"></canvas>  
         </div> 
+
+        <div class="chart-container" style= "float: left; width: 45%; height: 260px; padding-top: 14rem">
+            <canvas id="Chart3" width="7" height="4" aria-label="lbl" role="img"></canvas>  
+        </div> 
+
+        <div class="chart-container" style= "float: right; width: 45%; height: 260px; padding-top: 14rem">
+            <canvas id="Chart4" width="7" height="4" aria-label="lbl" role="img"></canvas>  
+        </div>
+
+        <div class="chart-container" style= "float: left; width: 45%; height: 260px; padding-top: 14rem">
+            <canvas id="Chart5" width="7" height="4" aria-label="lbl" role="img"></canvas>  
+        </div>
+
+        <div class="chart-container" style= "float: right; width: 45%; height: 260px; padding-top: 14rem">
+            <canvas id="Chart6" width="7" height="4" aria-label="lbl" role="img"></canvas>  
+        </div>
+
     </div>
 
     <div class='map-parent'>
-        <div class="lightCanvas" style= "float: left; width: 45%; height: 260px;">
+        <div class="lightCanvas" style= "float: left; width: 45%; height: 260px; padding-top: 14rem"">
             <div class="map-title">
                 <h2>Light map</h2>
             </div>
@@ -29,7 +46,7 @@
             <canvas id="lightCanvas" width="450" height="300" style="border:1px solid #d3d3d3;">
         </div> 
 
-        <div class="map-container" style= "float: right; width: 45%; height: 260px;">
+        <div class="map-container" style= "float: right; width: 45%; height: 260px; padding-top: 14rem"">
             <div class="map-title">
                 <h2>Temperature map</h2>
             </div>
@@ -49,6 +66,10 @@
 
     var ctx = document.getElementById('Chart').getContext("2d");
     var ctx2 = document.getElementById('Chart2').getContext("2d");
+    var ctx3 = document.getElementById('Chart3').getContext("2d");
+    var ctx4 = document.getElementById('Chart4').getContext("2d");
+    var ctx5 = document.getElementById('Chart5').getContext("2d");
+    var ctx6 = document.getElementById('Chart6').getContext("2d");
 
     var charts = [];
 
@@ -56,7 +77,7 @@
 
     Chart.defaults.global.defaultFontFamily = "monospace";
 
-    var Box1 = new Chart(ctx, {
+    var Box1Hum = new Chart(ctx, {
         type: 'line',
         label: 1,
         data:  {
@@ -66,25 +87,288 @@
                     data: [],
                     fill: false,
                     borderColor: "rgba(220,220,120,0.5)"
-                },
+                }
+            ]
+        },
+        options: {
+            //responsive: true,
+            legend: {
+                labels: {
+                    fontColor: "Gray",
+                    fontSize: 18    
+                }
+            },
+            title:      {
+                display: true,
+                text:    "Box 1",
+                fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+            },
+            scales:     {
+                xAxes: [{
+                    type: "time",
+                    distribution: 'series',
+                    time: {
+                        parser: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:  true,
+                        labelString: 'Time',
+                        fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Percentage',
+                        fontStyle: 'bold',
+                        fontColor: 'Indigo',
+                        fontSize: 18
+                    }
+                }]
+            }
+        }
+    });
+
+    var Box1Temp = new Chart(ctx2, {
+        type: 'line',
+        label: 1,
+        data:  {
+            datasets: [
                 {
                     label: "Temperature",
                     data:  [],
                     fill:  false,
                     borderColor: "rgba(3,157,220,0.5)"
-                },
+                }
+            ]
+        },
+        options: {
+            //responsive: true,
+            legend: {
+                labels: {
+                    fontColor: "Gray",
+                    fontSize: 18    
+                }
+            },
+            title:      {
+                display: true,
+                text:    "Box 1",
+                fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+            },
+            scales:     {
+                xAxes: [{
+                    type: "time",
+                    distribution: 'series',
+                    time: {
+                        parser: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:  true,
+                        labelString: 'Time',
+                        fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Celcius',
+                        fontStyle: 'bold',
+                        fontColor: 'Indigo',
+                        fontSize: 18
+                    }
+                }]
+            }
+        }
+    });
+
+    var Box9Temp = new Chart(ctx6, {
+        type: 'line',
+        label: 9,
+        data:  {
+            datasets: [
+                {
+                    label: "Temperature",
+                    data:  [],
+                    fill:  false,
+                    borderColor: "rgba(3,157,220,0.5)"
+                }
+            ]
+        },
+        options: {
+            //responsive: true,
+            legend: {
+                labels: {
+                    fontColor: "Gray",
+                    fontSize: 18    
+                }
+            },
+            title:      {
+                display: true,
+                text:    "Box 9",
+                fontStyle: 'bold',
+                        fontColor: 'Orange',
+                        fontSize: 18
+            },
+            scales:     {
+                xAxes: [{
+                    type: "time",
+                    distribution: 'series',
+                    time: {
+                        parser: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:  true,
+                        labelString: 'Time',
+                        fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Celcius',
+                        fontStyle: 'bold',
+                        fontColor: 'Indigo',
+                        fontSize: 18
+                    }
+                }]
+            }
+        }
+    });
+
+    var Box1Gas = new Chart(ctx3, {
+        type: 'line',
+        label: 1,
+        data:  {
+            datasets: [
                 {
                     label: "Gas",
                     data:  [],
                     fill:  false,
                     borderColor: "rgba(189,157,220,0.5)"
-                },
+                }
+            ]
+        },
+        options: {
+            //responsive: true,
+            legend: {
+                labels: {
+                    fontColor: "Gray",
+                    fontSize: 18    
+                }
+            },
+            title:      {
+                display: true,
+                text:    "Box 1",
+                fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+            },
+            scales:     {
+                xAxes: [{
+                    type: "time",
+                    distribution: 'series',
+                    time: {
+                        parser: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:  true,
+                        labelString: 'Time',
+                        fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'PPM',
+                        fontStyle: 'bold',
+                        fontColor: 'Indigo',
+                        fontSize: 18
+                    }
+                }]
+            }
+        }
+    });
+
+
+
+    var Box1Light = new Chart(ctx4, {
+        type: 'line',
+        label: 1,
+        data:  {
+            datasets: [
                 {
                     label: "Light",
                     data:  [],
                     fill:  false,
                     borderColor: "rgba(100,240,240,0.5)"
-                },
+                }
+            ]
+        },
+        options: {
+            //responsive: true,
+            legend: {
+                labels: {
+                    fontColor: "Gray",
+                    fontSize: 18    
+                }
+            },
+            title:      {
+                display: true,
+                text:    "Box 1",
+                fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+            },
+            scales:     {
+                xAxes: [{
+                    type: "time",
+                    distribution: 'series',
+                    time: {
+                        parser: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:  true,
+                        labelString: 'Time',
+                        fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Lux',
+                        fontStyle: 'bold',
+                        fontColor: 'Indigo',
+                        fontSize: 18
+                    }
+                }]
+            }
+        }
+    });
+
+    var Box1Dust = new Chart(ctx5, {
+        type: 'line',
+        label: 1,
+        data:  {
+            datasets: [
                 {
                     label: "Dust",
                     data:  [],
@@ -127,89 +411,9 @@
                 yAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: 'value',
+                        labelString: 'PPM',
                         fontStyle: 'bold',
-                        fontColor: 'Gray',
-                        fontSize: 18
-                    }
-                }]
-            }
-        }
-    });
-    var Box9 = new Chart(ctx2, {
-        type: 'line',
-        label: 9,
-        data:  {
-            datasets: [
-                {
-                    label: "Humidity",
-                    data: [],
-                    fill: false,
-                    borderColor: "rgba(220,220,120,0.5)"
-                },
-                {
-                    label: "Temperature",
-                    data:  [],
-                    fill:  false,
-                    borderColor: "rgba(3,157,220,0.5)"
-                },
-                {
-                    label: "Gas",
-                    data:  [],
-                    fill:  false,
-                    borderColor: "rgba(189,157,220,0.5)"
-                },
-                {
-                    label: "Light",
-                    data:  [],
-                    fill:  false,
-                    borderColor: "rgba(100,240,240,0.5)"
-                },
-                {
-                    label: "Dust",
-                    data:  [],
-                    fill:  false,
-                    borderColor: "rgba(5,5,5,0.4)"
-                }
-            ]
-        },
-        options: {
-            //responsive: true,
-            legend: {
-                labels: {
-                    fontColor: "Gray",
-                    fontSize: 18    
-                }
-            },
-            title:      {
-                display: true,
-                text:    "Box 9",
-                fontStyle: 'bold',
-                        fontColor: 'Gray',
-                        fontSize: 18
-            },
-            scales:     {
-                xAxes: [{
-                    type: "time",
-                    distribution: 'series',
-                    time: {
-                        parser: timeFormat,
-                        tooltipFormat: 'll'
-                    },
-                    scaleLabel: {
-                        display:  true,
-                        labelString: 'Time',
-                        fontStyle: 'bold',
-                        fontColor: 'Gray',
-                        fontSize: 18
-                    }
-                }],
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'value',
-                        fontStyle: 'bold',
-                        fontColor: 'Gray',
+                        fontColor: 'Indigo',
                         fontSize: 18
                     }
                 }]
@@ -217,8 +421,13 @@
         }
     });
 
-    charts.push(Box1);
-    charts.push(Box9);
+
+    charts.push(Box1Hum);
+    charts.push(Box1Temp);
+    charts.push(Box1Light);
+    charts.push(Box1Dust);
+    charts.push(Box1Gas);
+    charts.push(Box9Temp);
 
 function addData(chart, label, data) {
     //chart.data.labels.push(data.timestamp);
