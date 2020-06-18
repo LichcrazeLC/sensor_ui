@@ -37,8 +37,13 @@
 
     </div>
 
+    <div class="chart-container" style= "margin: auto; width: 50%; height: 260px; padding-top: 75rem">
+        <canvas id="Chart7" width="7" height="4" aria-label="lbl" role="img"></canvas>  
+    </div>
+   
+
     <div class='map-parent'>
-        <div class="canvas-div-container" style= "float: left; padding-top: 14rem" width="450" height="300">
+        <div class="canvas-div-container" style= "float: left;" width="450" height="300">
             <div class="map-title">
                 <h2>Light map</h2>
             </div>
@@ -46,7 +51,11 @@
             <canvas id="lightCanvas" width="450" height="300" class="canvas-class">
         </div>
 
-        <div class="canvas-div-container" style= "float: right; padding-top: 14rem" width="450" height="300" >
+        <b class="legend"> Normal values </b>
+        <img src="images/104497533_322966988720354_7375232411827123845_n.png" class="img" alt="Girl in a jacket">
+        <b class="legend2" style=> High values </b>
+
+        <div class="canvas-div-container" style= "float: right;" width="450" height="300" >
             <div class="map-title">
                 <h2>Temperature map</h2>
             </div>
@@ -65,12 +74,19 @@
 
 <script>
 
+    var lastLightValue = 0;
+    var lastTemperatureValue = 0;
+    var lastDustValue = 0;
+    var lastHumidityValue = 0;
+    var lastGasValue = 0;
+
     var ctx = document.getElementById('Chart').getContext("2d");
     var ctx2 = document.getElementById('Chart2').getContext("2d");
     var ctx3 = document.getElementById('Chart3').getContext("2d");
     var ctx4 = document.getElementById('Chart4').getContext("2d");
     var ctx5 = document.getElementById('Chart5').getContext("2d");
     var ctx6 = document.getElementById('Chart6').getContext("2d");
+    var ctx7 = document.getElementById('Chart7').getContext("2d");
 
     var charts = [];
 
@@ -182,7 +198,7 @@
                 yAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: 'Celcius',
+                        labelString: 'Celsius',
                         fontStyle: 'bold',
                         fontColor: 'Indigo',
                         fontSize: 18
@@ -239,7 +255,7 @@
                 yAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: 'Celcius',
+                        labelString: 'Celsius',
                         fontStyle: 'bold',
                         fontColor: 'Indigo',
                         fontSize: 18
@@ -422,6 +438,67 @@
         }
     });
 
+    var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+    gradientStroke.addColorStop(0, "#80b6f4");
+    gradientStroke.addColorStop(1, "#f49080");
+
+    var ComfortIndex = new Chart(ctx7, {
+        type: 'line',
+        label: 10,
+        data:  {
+            datasets: [
+                {
+                    label: "Comfort",
+                    data:  [],
+                    fill:  false,
+                    borderColor: gradientStroke
+                }
+            ]
+        },
+        options: {
+            //responsive: true,
+            legend: {
+                labels: {
+                    fontColor: "Gray",
+                    fontSize: 18    
+                }
+            },
+            title:      {
+                display: true,
+                text:    "Comfort Index",
+                fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+            },
+            scales:     {
+                xAxes: [{
+                    type: "time",
+                    distribution: 'series',
+                    time: {
+                        parser: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:  true,
+                        labelString: 'Time',
+                        fontStyle: 'bold',
+                        fontColor: 'Gray',
+                        fontSize: 18
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Comfort Level Percentage',
+                        fontStyle: 'bold',
+                        fontColor: 'Indigo',
+                        fontSize: 18
+                    }
+                }]
+            }
+        }
+    });
+
 
     charts.push(Box1Hum);
     charts.push(Box1Temp);
@@ -436,7 +513,7 @@ function addData(chart, label, data) {
         if (dataset.label == label)
         dataset.data.push(data);
     });
-    chart.update();
+    chart.update(); 
 }
 
 // function removeData(chart) {
@@ -449,11 +526,19 @@ function addData(chart, label, data) {
 
 function getValues(){
     fetch("http://127.0.0.1:8081/api/data").then(function(response) {
-        response.json().then(function(body) {
-            body.forEach(push);
-        });
 
-        console.log(charts[0].label)
+        response.json().then(function(body) {
+
+            console.log(body[0].timestamp)
+
+            var comfortIndx = (0.25 * lastGasValue) + (lastTemperatureValue * 0.25) + (lastDustValue * 0.20) + (lastHumidityValue * 0.15) + (lastLightValue * 0.15)
+
+            ComfortIndex.data.datasets[0].data.push({x: body[0].timestamp, y: comfortIndx});
+            ComfortIndex.update();
+
+            body.forEach(push);
+
+        });
     }); 
 }
 
@@ -463,6 +548,24 @@ function push(item, index) {
     
     var datapoint = { x : item.timestamp,
                         y : item.sensorValue };
+
+    var comfortLvl = 0;
+
+    if (item.sensorType == "Temperature") {
+       lastTemperatureValue = item.sensorValue
+    } else 
+    if (item.sensorType == "Light") {
+       lastLightValue = item.sensorValue
+    } else 
+    if (item.sensorType == "Humidity") {
+       lastHumidityValue = item.sensorValue
+    } else 
+    if (item.sensorType == "Dust") {
+       lastDustValue = item.sensorValue
+    } else 
+    if (item.sensorType == "Gas") {
+       lastGasValue = item.sensorValue
+    } 
 
     charts.forEach(chart => { 
         if (chart.config.label == item.boxId) {

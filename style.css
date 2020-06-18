@@ -26,6 +26,22 @@
     font-family: monospace;
   }
 
+  .legend{
+    font-size: 15px;
+    font-family: monospace;
+    position: absolute;
+    left: 810px;
+    top: 2520px;
+  }
+
+  .legend2{
+    font-size: 15px;
+    font-family: monospace;
+    position: absolute;
+    left: 1000px;
+    top: 2300px;
+  }
+
   .canvas-div-container {
     background-image: url("images/map.jpg");
     background-repeat: no-repeat !important; 
@@ -33,14 +49,21 @@
     /* height: 100%; 
     width:470px; */
     padding-left: 3px;
-    padding-top: 30px;
-    background-position: bottom;
-    background-position-y: 250px;
+    background-position-y: 25px;
     background-size: 100%;
     /* display: inline-block; */
   }
 
 .canvas-class {
   border:1px solid #d3d3d3; 
+  opacity: 0.6;
+}
+
+.img {
+  padding-top: 8rem;
+  padding-left: 10rem;
+  max-width:10%;
+  max-height: 250px;
+  height:auto;
   opacity: 0.6;
 }
